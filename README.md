@@ -43,28 +43,43 @@ chmod +x htteapot.sh
 ## Usage
 
 ```shell
-./htteapot.sh [-p] [-s] [-m]
+./htteapot.sh [-p port] [-s status code] [-b response body | -f response file] [-h custom headers]
 ```
 
 Where (*all parameters are optional*):
-- ```-p```: specify the port for the listener (*default is 8080*). E.g. ```-p 8081```.
 
-- ```-s```: specify the HTTP status code. Valid examples are ```-s 200``` or ```-s "200 OK"``` (*default is 418 I'm a Teapot*)
+- ```--help```: show the command usage.
 
-- ```-b```: specify the response body, Content-Type is text/plain. Valid examples are ```-b Hello!``` or ```-b "Hello, world!"``` (*default is HTTeaPot!*)
+- ```-p```: specify the port for the listener (*default is 8080*). E.g. ```-p 8081```. Running on ports below 1024 requires root privileges.
+
+- ```-s```: specify the HTTP status code. Valid examples are ```-s 200``` or ```-s "200 OK"``` (*default is 418 I'm a Teapot*).
+
+- ```-b```: specify the response body. Valid examples are ```-b Hello!``` or ```-b "Hello, world!"``` (*default is HTTeaPot!*).
+
+- ```-f```: specify the response body from a file. Valid examples are ```-f webpage.html``` or ```-f "file.txt"```.
+
+- ```-h```: specify custom headers. Multiple headers should be separated by '|'. Valid examples are ```-h "Content-Type: text/plain"``` or ```-h "Content-Type: text/html|Cache-Control: no-cache"``` (*default is Content-Type: text/plain; charset=utf-8*).
 
 Some examples:
 
+Serve a text response on the default port.
  ```shell
-./htteapot.sh -s 200 -b Hello
+./htteapot.sh -s 200 -b "Hello, world!"
 ```
 
+Serve a text response on port 8888.
 ```shell
 ./htteapot.sh -s "200 OK" -b "Hello, world!" -p 8888
 ```
 
+Serve the default response with a custom HTTP status code.
 ```shell
-./htteapot.sh -p 8082
+./htteapot.sh -s "404 Not found"
+```
+
+Serve an HTML file on port 80.
+```shell
+sudo ./htteapot.sh -p 80 -s "200 OK" -f "response.html" -h "Content-Type: text/html|Cache-Control: no-cache"
 ```
 
 To terminate HTTeaPot just send an interrupt (<kbd>Ctrl</kbd> + <kbd>C</kbd>)
